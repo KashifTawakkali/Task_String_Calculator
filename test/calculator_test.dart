@@ -62,13 +62,33 @@ void main() {
     expect(calculator.add('//[***]\n1***2***3'), 6);
   });
 
+  // Step 10: supports multiple delimiters in //[delim1][delim2] format
   test('supports multiple delimiters in //[delim1][delim2] format', () {
     final calculator = StringCalculator();
     expect(calculator.add('//[*][%]\n1*2%3'), 6);
   });
 
+  // Step 11: supports multiple multi-character delimiters
   test('supports multiple multi-character delimiters', () {
     final calculator = StringCalculator();
     expect(calculator.add('//[##][--]\n1##2--3'), 6);
+  });
+
+  // Step 12: Support empty brackets as delimiters (edge case).
+  test('treats empty brackets as invalid delimiter and throws error', () {
+    final calculator = StringCalculator();
+    expect(() => calculator.add('//[]\n1'), throwsException);
+  });
+
+  // Step 13: Custom delimiter with special regex characters.
+  test('supports delimiter with special regex characters like * and ?', () {
+    final calculator = StringCalculator();
+    expect(calculator.add('//[*?]\n1*?2*?3'), 6);
+  });
+
+  // Step 14: Handles input with only delimiters and no numbers.
+  test('returns 0 if only delimiters are provided', () {
+    final calculator = StringCalculator();
+    expect(calculator.add(',,,\n\n'), 0);
   });
 }

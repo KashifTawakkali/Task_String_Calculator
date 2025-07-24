@@ -13,10 +13,17 @@ class StringCalculator {
       final delimiterEnd = numbers.indexOf('\n');
       final delimiterSection = numbers.substring(2, delimiterEnd);
 
+      // Step 10: Handle empty brackets as invalid delimiter
+      if (delimiterSection.contains('[]')) {
+        throw Exception('Empty delimiters are not allowed');
+      }
+
       if (delimiterSection.startsWith('[')) {
         // Step 9: Support multiple or multi-character delimiters using //[delim] format
         final matches = RegExp(r'\[(.*?)\]').allMatches(delimiterSection);
         final delimiters = matches.map((m) => RegExp.escape(m.group(1)!)).toList();
+
+        // Step 13: Handle delimiters with special characters like * or ?
         delimiterPattern = delimiters.join('|');
       } else {
         // Step 6: Handle single custom delimiter
@@ -32,10 +39,10 @@ class StringCalculator {
     }
 
     // Step 2: If only one number, return that number (also covered by sum logic)
-    // Step 3, 4, 5, 6, 9: Split input using comma, newline, or custom delimiter(s)
+    // Step 3, 4, 5, 6, 9, 13: Split input using comma, newline, or custom delimiter(s)
     final parts = numbersSection
         .split(RegExp(delimiterPattern))
-        .where((p) => p.isNotEmpty);
+        .where((p) => p.isNotEmpty); // Step 12: Skip empty strings if delimiters are consecutive
 
     final numbersList = parts.map(int.parse).toList();
     print('Parsed numbers: $numbersList');
@@ -49,6 +56,11 @@ class StringCalculator {
     // Step 8: Ignore numbers greater than 1000
     final filtered = numbersList.where((n) => n <= 1000);
     print('Filtered (<=1000) numbers: $filtered');
+
+    // Step 14: Return 0 if all inputs are delimiters (i.e., no valid numbers)
+    if (filtered.isEmpty) {
+      return 0;
+    }
 
     return filtered.fold(0, (a, b) => a + b);
   }
