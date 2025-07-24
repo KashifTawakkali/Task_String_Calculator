@@ -61,6 +61,14 @@ StringCalculator().add("1,-2");             // Throws: Exception
 
 ---
 
+## 🧾 Test Results Screenshot
+
+Here’s a snapshot of successful test execution:
+
+![Test Results](test-result.png)
+
+---
+
 ## ✅ Requirements Met
 
 * [x] TDD Driven (Test-first approach)
