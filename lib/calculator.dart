@@ -8,7 +8,13 @@ class StringCalculator {
     if (!numbers.contains(',')) {
       return int.parse(numbers);
     }
-    // Placeholder for future logic
+    
+    // Step 3: Add two numbers separated by a comma.
+      if (numbers.contains(',')) {
+      final parts = numbers.split(',');
+      return parts.map(int.parse).reduce((a, b) => a + b);
+    }
+    
     return 0;
   }
 } 

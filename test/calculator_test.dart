@@ -12,4 +12,10 @@ void main() {
     final calculator = StringCalculator();
     expect(calculator.add('5'), 5);
   });
+
+  // Step 3: Add two numbers separated by a comma.
+  test('adds two numbers separated by a comma', () {
+    final calculator = StringCalculator();
+    expect(calculator.add('1,2'), 3);
+  });
 } 
