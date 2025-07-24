@@ -5,16 +5,24 @@ class StringCalculator {
       return 0;
     }
 
-    // Step 6: Check if a custom delimiter is defined using the //delimiter\n format
-    String delimiterPattern =
-        '[,\n]'; // Step 3 & 5: Default delimiters are comma and newline
     String numbersSection = numbers;
+    String delimiterPattern = '[,\n]'; // Step 3 & 5: Default delimiters are comma and newline
 
+    // Step 6 & Step 9: Check for custom delimiter syntax
     if (numbers.startsWith('//')) {
       final delimiterEnd = numbers.indexOf('\n');
-      final delimiter = numbers.substring(2, delimiterEnd);
-      delimiterPattern =
-          '[$delimiter\n]'; // Step 6: Replace delimiter pattern with custom one
+      final delimiterSection = numbers.substring(2, delimiterEnd);
+
+      if (delimiterSection.startsWith('[')) {
+        // Step 9: Support multiple or multi-character delimiters using //[delim] format
+        final matches = RegExp(r'\[(.*?)\]').allMatches(delimiterSection);
+        final delimiters = matches.map((m) => RegExp.escape(m.group(1)!)).toList();
+        delimiterPattern = delimiters.join('|');
+      } else {
+        // Step 6: Handle single custom delimiter
+        delimiterPattern = RegExp.escape(delimiterSection);
+      }
+
       numbersSection = numbers.substring(delimiterEnd + 1);
     }
 
@@ -23,14 +31,14 @@ class StringCalculator {
       return 0;
     }
 
-    // Step 2: Handles a single number
-    // Step 4: Handles multiple numbers
-    // Step 5: Supports splitting by comma and newline (or custom delimiter from Step 6)
+    // Step 2: If only one number, return that number (also covered by sum logic)
+    // Step 3, 4, 5, 6, 9: Split input using comma, newline, or custom delimiter(s)
     final parts = numbersSection
         .split(RegExp(delimiterPattern))
         .where((p) => p.isNotEmpty);
 
     final numbersList = parts.map(int.parse).toList();
+    print('Parsed numbers: $numbersList');
 
     // Step 7: Throw exception if negative numbers are present
     final negatives = numbersList.where((n) => n < 0).toList();
@@ -38,6 +46,10 @@ class StringCalculator {
       throw Exception('negative numbers not allowed: ${negatives.join(',')}');
     }
 
-    return numbersList.reduce((a, b) => a + b);
+    // Step 8: Ignore numbers greater than 1000
+    final filtered = numbersList.where((n) => n <= 1000);
+    print('Filtered (<=1000) numbers: $filtered');
+
+    return filtered.fold(0, (a, b) => a + b);
   }
 }

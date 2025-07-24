@@ -49,4 +49,26 @@ void main() {
       ),
     );
   });
-} 
+
+  // Step 8: Numbers greater than 1000 should be ignored in the sum.
+  test('ignores numbers greater than 1000', () {
+    final calculator = StringCalculator();
+    expect(calculator.add('2,1001,6'), 8);
+  });
+
+  // Step 9: Support multiple or multi-character delimiters using //[delim] format
+  test('supports multi-character delimiters in //[delim] format', () {
+    final calculator = StringCalculator();
+    expect(calculator.add('//[***]\n1***2***3'), 6);
+  });
+
+  test('supports multiple delimiters in //[delim1][delim2] format', () {
+    final calculator = StringCalculator();
+    expect(calculator.add('//[*][%]\n1*2%3'), 6);
+  });
+
+  test('supports multiple multi-character delimiters', () {
+    final calculator = StringCalculator();
+    expect(calculator.add('//[##][--]\n1##2--3'), 6);
+  });
+}
