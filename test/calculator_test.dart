@@ -30,4 +30,23 @@ void main() {
     final calculator = StringCalculator();
     expect(calculator.add('1\n2,3'), 6);
   });
+
+  // Step 6: If a custom delimiter is defined, use it to split the numbers.
+  test('supports custom delimiter using //;\n format', () {
+    final calculator = StringCalculator();
+    expect(calculator.add('//;\n1;2'), 3);
+  });
+
+  // Step 7: Throw an exception when the input contains negative numbers.
+  test('throws an exception for negative numbers', () {
+    final calculator = StringCalculator();
+    expect(
+      () => calculator.add('1,-2,-4'),
+      throwsA(
+        predicate((e) =>
+            e is Exception &&
+            e.toString().contains('negative numbers not allowed: -2,-4')),
+      ),
+    );
+  });
 } 
