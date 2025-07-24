@@ -24,4 +24,10 @@ void main() {
     final calculator = StringCalculator();
     expect(calculator.add('1,2,3,4'), 10);
   });
+
+  // Step 5: Allow newline character as an additional delimiter along with commas.
+  test('supports newline as a delimiter', () {
+    final calculator = StringCalculator();
+    expect(calculator.add('1\n2,3'), 6);
+  });
 } 

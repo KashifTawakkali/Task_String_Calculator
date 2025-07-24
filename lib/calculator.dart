@@ -8,13 +8,10 @@ class StringCalculator {
     if (!numbers.contains(',')) {
       return int.parse(numbers);
     }
-    
-    // Step 3: Add two numbers separated by a comma.
-      if (numbers.contains(',')) {
-      final parts = numbers.split(',');
-      return parts.map(int.parse).reduce((a, b) => a + b);
-    }
-    
-    return 0;
+
+    // Step 3 & 5 : Add two numbers separated by a comma, Allow newline character as an additional delimiter along with commas.
+    final delimiters = [',', '\n'];
+    final parts = numbers.split(RegExp('[,\n]'));
+    return parts.map(int.parse).reduce((a, b) => a + b);
   }
-} 
+}
