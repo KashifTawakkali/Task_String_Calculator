@@ -18,4 +18,10 @@ void main() {
     final calculator = StringCalculator();
     expect(calculator.add('1,2'), 3);
   });
+
+  // Step 4: Add any number of comma-separated values.
+  test('adds multiple numbers separated by commas', () {
+    final calculator = StringCalculator();
+    expect(calculator.add('1,2,3,4'), 10);
+  });
 } 
